@@ -5,8 +5,14 @@ const kafka = require("kafka-node"),
 
 function sendTrack(producer) {
 	const d1 = new Date();
-	const d2 = new Date();
-	d2.setSeconds(d2.getSeconds() + 5);
+	const d2 = new Date(d1);
+	d2.setSeconds(d2.getSeconds() + Math.floor(Math.random() * 10) + 1);
+
+	const d3 = new Date(d1);
+	d3.setSeconds(d3.getSeconds() + Math.floor(Math.random() * 10) + 1);
+
+	const d4 = new Date(d1);
+	d4.setSeconds(d4.getSeconds() + Math.floor(Math.random() * 10) + 1);
 
 	const tracks = [
 		{
