@@ -1,48 +1,94 @@
-var kafka = require("kafka-node"),
+const kafka = require("kafka-node"),
 	Producer = kafka.Producer,
 	client = new kafka.KafkaClient(),
 	producer = new Producer(client);
 
-let count = 0;
+function sendTrack(producer) {
+	const d1 = new Date();
+	const d2 = new Date();
+	d2.setSeconds(d2.getSeconds() + 5);
 
-// producer.on("ready", function() {
-// 	console.log("ready");
-// 	setInterval(function() {
-// 		payloads = [
-// 			{ topic: "cat", messages: `I have ${count} cats`, partition: 0 }
-// 		];
-//
-// 		producer.send(payloads, function(err, data) {
-// 			console.log(data);
-// 			count += 1;
-// 		});
-// 	}, 5000);
-// });
+	const tracks = [
+		{
+			timestamp: d1.getTime(),
+			object_id: 'Arthas',
+			age_error: 10,
+			age_value: 35,
+			gender_label: 'M',
+			gender_score: 100,
+			positions: [
+				{
+					timestamp: d1.getTime(),
+					x: 1,
+					y: 2
+				},
+				{
+					timestamp: d2.getTime(),
+					x: 3,
+					y: 4
+				}
+			]
+		},
+		{
+			timestamp: d1.getTime(),
+			object_id: 'Jaina',
+			age_error: 10,
+			age_value: 32,
+			gender_label: 'F',
+			gender_score: 100,
+			positions: [
+				{
+					timestamp: d1.getTime(),
+					x: 10,
+					y: 11
+				},
+				{
+					timestamp: d2.getTime(),
+					x: 12,
+					y: 13
+				}
+			]
+		},
+		{
+			timestamp: d1.getTime(),
+			object_id: "Kael'Thas",
+			age_error: 10,
+			age_value: 31,
+			gender_label: 'M',
+			gender_score: 100,
+			positions: [
+				{
+					timestamp: d1.getTime(),
+					x: 20,
+					y: 21
+				},
+				{
+					timestamp: d2.getTime(),
+					x: 22,
+					y: 23
+				}
+			]
+		},
+
+	];
+
+	tracks.forEach(track => {
+		producer.send([{ topic: 'track', messages: JSON.stringify(track)}], (err, data) => {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(data);
+			}
+		});
+	});
+}
+
 producer.on('ready', () => {
 	console.log('Producer ready');
-	const obj = {
-		"timestamp": 1582901306142,
-		"object_id": "some_id",
-		"age_error": 10,
-		"age_value": 25,
-		"gender_label": "M",
-		"gender_score": 90,
-		"positions": [
-			{
-				"timestamp": 1582901306157,
-				"x": 256.23,
-				"y": 247.31
-			}
 
-		]
-	};
-	producer.send([{ topic: 'track', messages: JSON.stringify(obj)}], (err, data) => {
-		if (err) {
-			console.log(err);
-		} else {
-			console.log(data);
-		}
-	});
+	setInterval(function() {
+		sendTrack(producer);
+	}, 5000);
 });
 
 producer.on("error", function(err) {
