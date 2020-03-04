@@ -3,16 +3,20 @@ const kafka = require("kafka-node"),
 	client = new kafka.KafkaClient(),
 	producer = new Producer(client);
 
+function getRandomSec() {
+	return Math.floor(Math.random() * 5) || 1;
+}
+
 function sendTrack(producer) {
 	const d1 = new Date();
 	const d2 = new Date(d1);
-	d2.setSeconds(d2.getSeconds() + Math.floor(Math.random() * 10) + 1);
+	d2.setSeconds(d2.getSeconds() + getRandomSec());
 
 	const d3 = new Date(d1);
-	d3.setSeconds(d3.getSeconds() + Math.floor(Math.random() * 10) + 1);
+	d3.setSeconds(d3.getSeconds() + getRandomSec());
 
 	const d4 = new Date(d1);
-	d4.setSeconds(d4.getSeconds() + Math.floor(Math.random() * 10) + 1);
+	d4.setSeconds(d4.getSeconds() + getRandomSec());
 
 	const tracks = [
 		{
