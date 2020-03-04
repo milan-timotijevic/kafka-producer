@@ -83,7 +83,7 @@ function sendTrack(producer) {
 	];
 
 	tracks.forEach(track => {
-		producer.send([{ topic: 'v_service.topics.cv_namespace.Track', messages: JSON.stringify(track)}], (err, data) => {
+		producer.send([{ topic: 'cv_service.topics.cv_namespace.Track', messages: JSON.stringify(track)}], (err, data) => {
 			if (err) {
 				console.log(err);
 			} else {
